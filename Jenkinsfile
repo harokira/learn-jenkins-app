@@ -43,6 +43,7 @@ pipeline {
             }
         }
 
+        // end 2 end test
         stage('E2E') {
             agent {
                 docker {
@@ -53,8 +54,11 @@ pipeline {
 
             steps {
                 sh '''
-                    npm install -g serve
-                    node_modules/.bin/serve -s build
+                    npm install serve
+                    # Start Server and it will continue to run endlessly like a normal server
+                    # & will run the server in the background
+                    node_modules/.bin/serve -s build &
+                    sleep 10
                     npx playwright test
                 '''
             }
